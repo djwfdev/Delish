@@ -1,6 +1,5 @@
-import { Recipe } from '../types/recipe';
-
-const BASE_URL = 'https://api.spoonacular.com';
+import { Recipe } from '@/types/recipe';
+import { BASE_URL } from '@/constants/constants';
 
 export const getPopularRecipes = async (): Promise<Recipe[]> => {
 	try {

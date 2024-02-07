@@ -1,20 +1,14 @@
-import { RecipeCarousel } from '@/components/recipecarousel';
+import { Navbar } from '@/components/Navbar';
+import { RecipeCarousel } from '@/components/RecipeCarousel';
 import { getPopularRecipes } from '@/lib/api';
-import { Recipe } from '@/types/recipe';
 
 export default async function Home() {
 	const recipes = await getPopularRecipes();
 
 	return (
-		<main>
+		<main className='min-w-[320px] flex flex-col mx-auto justify-center items-center px-4'>
+            <Navbar />
 			<RecipeCarousel recipes={recipes}/>
-			<div>
-				{recipes.map((recipe: Recipe) => (
-					<div key={recipe.id}>
-						<img src={recipe.image} alt={recipe.title} />
-					</div>
-				))}
-			</div>
 		</main>
 	);
 }
