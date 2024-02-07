@@ -1,17 +1,20 @@
-import { getRecipeById, getRecipes } from './lib/api';
-import { Recipe } from './types/recipe';
+import { RecipeCarousel } from '@/components/recipecarousel';
+import { getPopularRecipes } from '@/lib/api';
+import { Recipe } from '@/types/recipe';
 
 export default async function Home() {
-	const recipes = await getRecipeById(1);
+	const recipes = await getPopularRecipes();
 
 	return (
-		<div>
-            <div>{recipes?.title}</div>
-			{/* {recipes.map((recipe: Recipe) => (
-                <div key={recipe.id}>
-                    <img src={recipe.image} alt={recipe.title}/>
-                </div>
-            ))} */}
-		</div>
+		<main>
+			<RecipeCarousel recipes={recipes}/>
+			<div>
+				{recipes.map((recipe: Recipe) => (
+					<div key={recipe.id}>
+						<img src={recipe.image} alt={recipe.title} />
+					</div>
+				))}
+			</div>
+		</main>
 	);
 }

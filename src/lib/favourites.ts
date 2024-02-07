@@ -1,4 +1,4 @@
-import { Recipe } from '../types/recipe';
+import { Recipe } from '../../types/recipe';
 
 export const addToFavorites = (recipe: Recipe): void => {
     try {

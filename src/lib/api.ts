@@ -2,7 +2,7 @@ import { Recipe } from '../types/recipe';
 
 const BASE_URL = 'https://api.spoonacular.com';
 
-export const getRecipes = async (): Promise<Recipe[]> => {
+export const getPopularRecipes = async (): Promise<Recipe[]> => {
 	try {
 		const response = await fetch(`${BASE_URL}/recipes/random?number=10&apiKey=${process.env.API_KEY}`); // GET
 		if (!response.ok) {
