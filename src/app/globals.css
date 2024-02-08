@@ -47,4 +47,27 @@
         --input: 240 3.7% 15.9%;
         --ring: 142.4 71.8% 29.2%;
     }
+
+    @font-face {
+        font-family: 'Agrandir';
+        src: url('/fonts/Agrandir-Regular.otf');
+    }
+
+    @font-face {
+        font-family: 'Recoleta';
+        src: url('/fonts/Recoleta-Bold.ttf');
+    }
+}
+
+.title {
+    font-family: 'Recoleta';
+}
+
+.heading {
+    font-family: 'Agrandir';
+}
+
+html {
+    --scroll-behavior: smooth !important;
+    scroll-behavior: smooth !important;
 }

@@ -1,14 +1,21 @@
 import { Navbar } from '@/components/Navbar';
 import { RecipeCarousel } from '@/components/RecipeCarousel';
-import { getPopularRecipes } from '@/lib/api';
+import { getDietLimitedRecipes, getPopularRecipes } from '@/lib/api';
+import { DIETS } from '@/constants/constants';
+import { SearchBar } from '@/components/SearchBar';
 
 export default async function Home() {
-	const recipes = await getPopularRecipes();
+	const popularRecipes = await getPopularRecipes();
+    const vegetarianRecipes = await getDietLimitedRecipes(DIETS.VG);
+    const ketoRecipes = await getDietLimitedRecipes(DIETS.KTO);
 
 	return (
-		<main className='min-w-[320px] flex flex-col mx-auto justify-center items-center px-4'>
+		<main className='min-w-[470px] flex flex-col mx-auto justify-center items-center p-2 gap-8'>
             <Navbar />
-			<RecipeCarousel recipes={recipes}/>
+            <SearchBar />
+			<RecipeCarousel title={'Most popular recipes'} recipes={popularRecipes} autoPlay={true}/>
+            <RecipeCarousel title={'Vegetarian recipes'} recipes={vegetarianRecipes}  />
+            <RecipeCarousel title={'Ketogenic recipes'} recipes={ketoRecipes}  />
 		</main>
 	);
 }

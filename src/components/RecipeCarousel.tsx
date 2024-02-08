@@ -1,8 +1,7 @@
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
 import Autoplay from 'embla-carousel-autoplay';
-import { Card, CardContent } from '@/components/ui/card';
 import {
 	Carousel,
 	CarouselContent,
@@ -11,44 +10,40 @@ import {
 	CarouselPrevious,
 } from '@/components/ui/carousel';
 import { Recipe } from '@/types/recipe';
+import { RecipeCard } from './RecipeCard';
 
 interface RecipeCarouselProps {
+    title: string;
 	recipes: Recipe[];
+    autoPlay?: boolean;
 }
 
-export const RecipeCarousel = ({ recipes }: RecipeCarouselProps) => {
-	const plugin = React.useRef(Autoplay({ delay: 3000, stopOnInteraction: false }));
+export const RecipeCarousel = ({ title, recipes, autoPlay = false }: RecipeCarouselProps) => {
+	const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: false }));
 
 	return (
-		<div>
-			<section className='flex items-center justify-center gap-2'>
-				<Carousel
-					className='w-full max-w-sm'
-					opts={{ align: "start", loop: true }}
-					plugins={[plugin.current]}
-				>
-					<CarouselContent>
-						{recipes.map((recipe: Recipe) => (
-							<CarouselItem
-								key={recipe.id}
-								className='md:basis-1/2 lg:basis-1/3'
-							>
-								<div className='p-1'>
-									<Card>
-										<CardContent className='flex flex-col gap-2 aspect-square items-center justify-center p-2'>
-											<img className='w-full object-cover rounded-t-md' src={recipe.image} alt={recipe.title} />
-											<span className='text-sm font-light'>{recipe.title}</span>
-										</CardContent>
-									</Card>
-								</div>
-							</CarouselItem>
-						))}
-					</CarouselContent>
-					<CarouselPrevious />
-					<CarouselNext />
-				</Carousel>
-			</section>
-			<p>test</p>
-		</div>
+		<section className='flex flex-col'>
+			<h1 className='pl-1.5 text-left heading text-xl'>{title}</h1>
+			<Carousel
+				className='w-full max-w-md sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-6xl'
+				opts={{ align: 'start', loop: true }}
+				plugins={autoPlay ? [plugin.current]: []}
+			>
+				<CarouselContent>
+					{recipes.map((recipe: Recipe) => (
+						<CarouselItem
+							key={recipe.id}
+							className='sm:basis-1/2 lg:basis-1/3 xl:basis-1/4'
+						>
+							<div className='relative'>
+								<RecipeCard recipe={recipe} />
+							</div>
+						</CarouselItem>
+					))}
+				</CarouselContent>
+				<CarouselPrevious />
+				<CarouselNext />
+			</Carousel>
+		</section>
 	);
 };

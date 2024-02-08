@@ -1,38 +1,47 @@
-import { Recipe } from '../../types/recipe';
+'use client'
 
-export const addToFavorites = (recipe: Recipe): void => {
+import { Recipe } from '@/types/recipe';
+
+export const addToFavourites = (recipe: Recipe): void => {
     try {
-        const favouritesJSON = sessionStorage.getItem('favourites');
-        let favourites = favouritesJSON ? JSON.parse(favouritesJSON) : [];
+        if (typeof window !== 'undefined') {
+            const favouritesJSON = localStorage.getItem('favourites'); // GET
+            let favourites = favouritesJSON ? JSON.parse(favouritesJSON) : [];
 
-        favourites.push(recipe); 
-        sessionStorage.setItem('favourites', JSON.stringify(favourites)); // POST
+            favourites.push(recipe); 
+            localStorage.setItem('favourites', JSON.stringify(favourites)); // POST
+        }
     } catch (error) {
         console.error('Error adding to favourites:', error);
     }
 };
 
-export const removeFromFavorites = (id: number): void => {
+export const removeFromFavourites = (id: number): void => {
     try {
-        let favorites: Recipe[] = [];
-        const favoritesJSON = sessionStorage.getItem('favorites');
-        if (favoritesJSON) {
-            favorites = JSON.parse(favoritesJSON);
-            // filter out the recipe
-            favorites = favorites.filter((recipe) => recipe.id !== id);
-            sessionStorage.setItem('favorites', JSON.stringify(favorites)); // DELETE
+        if (typeof window !== 'undefined') {
+            let favourites: Recipe[] = [];
+            const favouritesJSON = localStorage.getItem('favourites');
+            if (favouritesJSON) {
+                favourites = JSON.parse(favouritesJSON);
+                // filter out the recipe
+                favourites = favourites.filter((recipe) => recipe.id !== id);
+                localStorage.setItem('favourites', JSON.stringify(favourites)); // DELETE
+            }
         }
     } catch (error) {
-        console.error('Error removing from favorites:', error);
+        console.error('Error removing from favourites:', error);
     }
 };
 
-export const getFavorites = (): Recipe[] => {
+export const getFavourites = (): Recipe[] => {
     try {
-        const favoritesJSON = sessionStorage.getItem('favorites'); // GET
-        return favoritesJSON ? JSON.parse(favoritesJSON) : [];
+        if (typeof window !== 'undefined') {
+            const favouritesJSON = localStorage.getItem('favourites'); // GET
+            return favouritesJSON ? JSON.parse(favouritesJSON) : [];
+        }
+        return [];
     } catch (error) {
-        console.error('Error getting favorites:', error);
+        console.error('Error getting favourites:', error);
         return [];
     }
 };

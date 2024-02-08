@@ -10,7 +10,21 @@ export const getPopularRecipes = async (): Promise<Recipe[]> => {
 		const data = await response.json();
 		return data.recipes;
 	} catch (error) {
-		console.error('Error fetching recipes:', error);
+		console.error('Error fetching recipes: ', error);
+		return [];
+	}
+};
+
+export const getDietLimitedRecipes = async (diet: string): Promise<Recipe[]> => {
+	try {
+		const response = await fetch(`${BASE_URL}/recipes/complexSearch?addRecipeInformation=true&diet=${diet}&number=15&apiKey=${process.env.API_KEY}`); // GET
+		if (!response.ok) {
+			throw new Error('Failed to get recipes for ' + diet);
+		}
+		const data = await response.json();
+		return data.results;
+	} catch (error) {
+		console.error('Error fetching recipes: ', error);
 		return [];
 	}
 };
@@ -24,7 +38,7 @@ export const getRecipeById = async (id: number): Promise<Recipe | null> => {
 		const data = await response.json();
 		return data;
 	} catch (error) {
-		console.error('Error fetching recipe:', error);
+		console.error('Error fetching recipe: ', error);
 		return null;
 	}
 };
