@@ -1,18 +1,33 @@
-'use client'
+'use client';
 
-import React from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { toSentenceCase } from '@/lib/utils';
 import { Recipe } from '@/types/recipe';
-import { Clock, Plus, PlusCircle, PlusIcon, Users } from 'lucide-react';
+import { Clock, Heart, Users } from 'lucide-react';
 import { Card } from '@/components/ui/card';
-import { addToFavourites } from '@/lib/favourites';
+import { addToFavourites, removeFromFavourites } from '@/lib/favourites';
 import { Button } from './ui/button';
+import { useFavourites } from '@/context/FavouritesContext';
 
 interface RecipeCardProps {
 	recipe: Recipe;
 }
 
 export const RecipeCard = ({ recipe }: RecipeCardProps) => {
+    const { favourites } = useFavourites();
+    const isRecipeInFavourites = () => {
+		return favourites.some((fav) => fav.id === recipe.id);
+	};
+	const [isFavourited, setIsFavourited] = useState<boolean>(isRecipeInFavourites());
+
+	useEffect(() => {
+		setIsFavourited(isRecipeInFavourites());
+	}, [favourites]);
+
+	const toggleFavourite = () => {
+		isFavourited ? removeFromFavourites(recipe.id) : addToFavourites(recipe);
+	};
+
 	return (
 		<Card className='sm:h-[20rem] transition-transform duration-200 scale-95 hover:scale-100 hover:cursor-pointer'>
 			<img
@@ -33,12 +48,13 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 					<span>{recipe.readyInMinutes} min</span>
 				</div>
 				<Button
-					className='h-6 w-6 rounded-full ring-1 hover:ring-2 hover:bg-green-100 hover:scale-110 ring-primary transition-transform'
+					className={`h-6 w-6 rounded-full ring-1 hover:ring-2 hover:bg-green-100 hover:scale-110 ring-primary transition-transform 
+                    ${isFavourited && 'bg-primary text-white hover:bg-green-600 hover:text-white'}`}
 					size={'icon'}
 					variant={'ghost'}
-					onClick={() => addToFavourites(recipe)}
+					onClick={toggleFavourite}
 				>
-					<PlusIcon className='h-4 w-4' />
+					<Heart className={`h-4 w-4`} />
 				</Button>
 			</div>
 		</Card>
