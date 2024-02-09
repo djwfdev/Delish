@@ -13,7 +13,9 @@ export default async function Home() {
 	return (
 		<main className='min-w-[470px] flex flex-col mx-auto justify-center items-center p-2 gap-8'>
 			<Navbar />
-			<SearchBar />
+			<div className='w-full max-w-md sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-6xl'>
+				<SearchBar />
+			</div>
 			<FavouritesProvider>
 				<RecipeCarousel
 					title={'Most popular recipes'}

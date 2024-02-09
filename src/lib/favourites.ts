@@ -1,8 +1,6 @@
-'use client'
-
 import { Recipe } from '@/types/recipe';
 
-// POST: adds a recipe to favourites
+// UPDATE (POST): adds a recipe to favourites
 export const addToFavourites = (recipe: Recipe): void => {
     try {
         if (typeof window !== 'undefined') {
@@ -41,7 +39,7 @@ export const removeFromFavourites = (id: number): void => {
     }
 };
 
-// GET: returns favourite recipes list
+// READ (GET): returns favourite recipes list
 export const getFavourites = (): Recipe[] => {
     try {
         if (typeof window !== 'undefined') {
