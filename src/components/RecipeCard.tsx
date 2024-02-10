@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { toSentenceCase } from '@/lib/utils';
 import { Recipe } from '@/types/recipe';
 import { Clock, Heart, Users } from 'lucide-react';
@@ -9,6 +10,7 @@ import { addToFavourites, removeFromFavourites } from '@/lib/favourites';
 import { Button } from './ui/button';
 import { useFavourites } from '@/context/FavouritesContext';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 interface RecipeCardProps {
 	recipe: Recipe;
@@ -27,23 +29,28 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
 	}, [favourites]);
 
 	const toggleFavourite = () => {
-		isFavourited ? removeFromFavourites(recipe.id) : addToFavourites(recipe);
+		if (isFavourited) {
+			removeFromFavourites(recipe.id);
+			toast.success('Removed from favourites!');
+		} else {
+			addToFavourites(recipe);
+            toast.success('Added to favourites!');
+		}
 	};
 
 	return (
 		<Card className='h-full min-w-[15rem] transition-transform duration-200 scale-95 hover:scale-100 hover:cursor-pointer'>
-			<div
-				className='h-64 sm:h-56 lg:h-64 xl:h-72 transition-transform duration-300'
-				onClick={() => router.push(`/${recipe.id}`)}
-			>
-				<img
-					src={recipe.image}
-					alt={recipe.title}
-					className='w-full h-full object-cover rounded-t-md'
-				/>
-				<p className='absolute flex z-10 items-center justify-center inset-x-0 top-0 bg-primary bg-opacity-70 rounded-t-md h-12 p-3 tracking-wide text-white text-sm text-center'>
-					{toSentenceCase(recipe.title)}
-				</p>
+			<div className='h-64 sm:h-56 lg:h-64 xl:h-72 transition-transform duration-300'>
+				<Link href={recipe.sourceUrl} target='_blank'>
+					<img
+						src={recipe.image}
+						alt={recipe.title}
+						className='w-full h-full object-cover rounded-t-md'
+					/>
+					<p className='absolute flex z-10 items-center justify-center inset-x-0 top-0 bg-primary bg-opacity-70 rounded-t-md h-12 p-3 tracking-wide text-white text-sm text-center'>
+						{toSentenceCase(recipe.title)}
+					</p>
+				</Link>
 			</div>
 			<div className='flex p-4 justify-between items-center text-center text-sm text-gray-600'>
 				<div className='flex gap-1 items-center'>
