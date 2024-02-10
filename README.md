@@ -1,3 +1,4 @@
+![preview](https://github.com/djwfdev/Delish/assets/69446069/39346e81-36a4-4df1-94ab-6d4818558418)
 # Recipe CRUD App
 An application that uses spoonacular's API to list recipes.
 
